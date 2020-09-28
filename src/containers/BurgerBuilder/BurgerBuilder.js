@@ -7,6 +7,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from "../../axios-orders";
 
+
 const INGREDIENT_PRICES = {
     salad: 0.5,
     bacon: 0.4,
@@ -61,34 +62,16 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinuedHandler = () => {
-        this.enableLoading();
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Rao',
-                address: {
-                    house: 'B-2-32, Eden Value Homes, LHR',
-                    zipcode: '54000',
-                    city: 'Lahore',
-                },
-                email: 'rao@gmail.com',
-            },
-            delivery: 'fastest',
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
         }
-        axios.post('/orders.json', order).then((response) => {
-            this.disableLoading();
-            this.setState({
-                purchasing: false,
-            })
-        }).catch((error) => {
-            this.disableLoading();
-            this.setState({
-                purchasing: false,
-            })
-            console.log('Error: ', error);
-            alert('Sorry your order could not be processed!')
-        })
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString,
+        });
     }
 
     addIngredientHandler = (type) => {
