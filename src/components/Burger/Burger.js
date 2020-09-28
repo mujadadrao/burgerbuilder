@@ -3,7 +3,6 @@ import styles from './Burger.module.css';
 import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
 const Burger = (props) => {
-    console.log('[Burger] props.ingredients: ', props.ingredients);
     let transformedIngredients = Object.keys( props.ingredients )
         .map( igKey => {
             return [...Array( props.ingredients[igKey] )].map( ( _, i ) => {
@@ -16,7 +15,6 @@ const Burger = (props) => {
     if (transformedIngredients.length === 0) {
         transformedIngredients = <p>Please start adding ingredients!</p>;
     }
-    console.log('[Burger] transformed.ingredients: ', transformedIngredients);
     return (
         <div className={styles.Burger}>
             <BurgerIngredient type="bread-top" />
