@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import CheckoutSummary from "../../components/Order/CheckoutSummary";
+import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import {Route} from 'react-router-dom';
 import ContactData from "./ContactData/ContactData";
@@ -8,6 +8,10 @@ class Checkout extends Component {
     state = {
         ingredients: null,
         loading: true,
+    }
+
+    isEmpty = (obj) => {
+        return Object.keys(obj).length === 0 && obj.constructor === Object;
     }
 
     componentDidMount() {
@@ -38,8 +42,10 @@ class Checkout extends Component {
 
 
     render() {
+        console.log(this.state);
         return (
-            this.state.loading && !this.state.ingredients ? <Spinner/> :
+            this.state.loading? <Spinner/> :
+                this.isEmpty(this.state.ingredients) ? <h1>Please go to burger builder and add some ingredients!</h1> :
                 <div>
                     <CheckoutSummary ingredients={this.state.ingredients}
                                      checkoutCancelled={this.checkoutCancelledHandler}
