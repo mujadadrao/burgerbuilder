@@ -1,5 +1,6 @@
 ## Burger Builder App - ReactJS
 
+
 ### Installation
 - Clone or download the repository
 - Navigate to the repository's directory

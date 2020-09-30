@@ -5,6 +5,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import styles from './ContactData.module.css';
 import axios from '../../../axios-orders';
 import Input from "../../../components/UI/Form/Input/Input";
+import {connect} from 'react-redux';
 
 class ContactData extends Component {
     state = {
@@ -86,7 +87,7 @@ class ContactData extends Component {
                         {value: 'cheapest', displayValue: 'Cheapest'}
                     ]
                 },
-                value: '',
+                value: 'fastest',
                 validation: {},
                 valid: true
             }
@@ -136,7 +137,7 @@ class ContactData extends Component {
         }
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.price,
+            price: this.props.totalPrice,
             orderData: formData
         }
         axios.post( '/orders.json', order )
@@ -176,8 +177,6 @@ class ContactData extends Component {
                 config: this.state.orderForm[key]
             });
         }
-
-
         return (
             <div className={styles.ContactData}>
                 <h4>Enter your Contact Data</h4>
@@ -195,7 +194,6 @@ class ContactData extends Component {
                                 changed={(event) => this.onChangeHandler(event, formElement.id)}
                             />
                         ))}
-                        {console.log('formIsValid: ', this.state.formIsValid)}
                         <Button btnType="Success" disabled={!this.state.formIsValid}>ORDER</Button>
                     </form>
                 }
@@ -204,4 +202,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => {
+    return {
+        ingredients: state.ings.ingredients,
+        totalPrice: state.price.totalPrice,
+    }
+}
+
+export default connect(mapStateToProps)(ContactData);
