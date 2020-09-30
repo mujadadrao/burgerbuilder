@@ -1,5 +1,6 @@
 ## Burger Builder App - ReactJS
 
+A burger builder app where you can build a juicy, delicious burger and order it online!
 
 ### Installation
 - Clone or download the repository
