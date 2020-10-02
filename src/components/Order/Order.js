@@ -3,18 +3,19 @@ import React from 'react';
 import styles from './Order.module.css';
 
 const Order = ( props ) => {
-    const ingredients = [];
-
-    for ( let ingredientName in props.ingredients ) {
-        ingredients.push(
+    const {ingredients, price} = props.order;
+    const {name, street, zipCode, country, email, deliveryMethod} = props.order.orderData;
+    const transformedIngredients = [];
+    for ( let ingredientName in ingredients ) {
+        transformedIngredients.push(
             {
                 name: ingredientName,
-                amount: props.ingredients[ingredientName]
+                amount: ingredients[ingredientName]
             }
         );
     }
 
-    const ingredientOutput = ingredients.map(ig => {
+    const ingredientOutput = transformedIngredients.map(ig => {
         return <span 
             style={{
                 textTransform: 'capitalize',
@@ -29,7 +30,11 @@ const Order = ( props ) => {
     return (
         <div className={styles.Order}>
             <p>Ingredients: {ingredientOutput}</p>
-            <p>Price: <strong>USD {Number.parseFloat( props.price ).toFixed( 2 )}</strong></p>
+            <p>Customer Name: {name}</p>
+            <p>Customer Email: {email}</p>
+            <p>Customer Address: {street}, {zipCode}, {country}</p>
+            <p>Delivery Method: <strong>{deliveryMethod}</strong></p>
+            <p>Price: <strong>${Number.parseFloat( price ).toFixed( 2 )}</strong></p>
         </div>
     );
 };

@@ -1,12 +1,15 @@
-export const ADD_PRICE = 'ADD_PRICE';
-export const REMOVE_PRICE = 'REMOVE_PRICE';
+import * as actionTypes from "./actionTypes";
 
 export const addPrice = (amount) => ({
-    type: ADD_PRICE,
+    type: actionTypes.ADD_PRICE,
     amount,
 })
 
 export const removePrice = (amount) => ({
-    type: REMOVE_PRICE,
+    type: actionTypes.REMOVE_PRICE,
     amount,
+})
+
+export const resetPrice = () => ({
+    type: actionTypes.RESET_PRICE,
 })

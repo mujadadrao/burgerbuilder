@@ -1,20 +1,27 @@
-import * as totalPriceActions from '../actions/totalPrice';
+import * as actionTypes from "../actions/actionTypes";
+
+const BASE_PRICE = 4;
 
 const initialState = {
-    totalPrice: 4,
+    totalPrice: BASE_PRICE,
 }
 
 const totalPrice = (state = initialState, action) => {
     switch (action.type) {
-        case totalPriceActions.ADD_PRICE:
+        case actionTypes.ADD_PRICE:
             return {
                 ...state,
                 totalPrice: state.totalPrice + action.amount,
             }
-        case totalPriceActions.REMOVE_PRICE:
+        case actionTypes.REMOVE_PRICE:
             return {
                 ...state,
                 totalPrice: state.totalPrice - action.amount,
+            }
+        case actionTypes.RESET_PRICE:
+            return {
+                ...state,
+                totalPrice: BASE_PRICE,
             }
         default:
             return state;

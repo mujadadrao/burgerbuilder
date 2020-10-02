@@ -9,6 +9,7 @@ import axios from "../../axios-orders";
 import {connect} from 'react-redux';
 import * as ingredientsActions from '../../store/actions/ingredients';
 import * as totalPriceActions from '../../store/actions/totalPrice';
+import * as purchaseActions from "../../store/actions/purchase";
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -17,24 +18,17 @@ const INGREDIENT_PRICES = {
     meat: 0.7,
 }
 
+const getIngredientPrice = ingredient => INGREDIENT_PRICES[ingredient];
+
 const BASE_PRICE = 4;
 
 class BurgerBuilder extends Component {
     state = {
         purchasing: false,
-        loading: false,
-        error: false,
     }
 
     componentDidMount() {
-        axios.get('/ingredients.json').then((response) => {
-            this.setState({ingredients: response.data})
-        }).catch((error) => {
-            console.log('Error: ', error);
-            this.setState({
-                error: true,
-            })
-        })
+        this.props.onInitIngredients();
     }
 
     purchaseHandler = () => {
@@ -50,6 +44,7 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinuedHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push('/checkout');
     }
 
@@ -64,11 +59,10 @@ class BurgerBuilder extends Component {
             this.props.ingredients ?
                 <Fragment>
                     <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                        {this.state.loading ? <Spinner/> :
-                            <OrderSummary ingredients={this.props.ingredients}
-                                          purchaseCancelled={this.purchaseCancelHandler}
-                                          purchaseContinued={this.purchaseContinuedHandler}
-                                          price={this.props.totalPrice}/>}
+                    <OrderSummary ingredients={this.props.ingredients}
+                                  purchaseCancelled={this.purchaseCancelHandler}
+                                  purchaseContinued={this.purchaseContinuedHandler}
+                                  price={this.props.totalPrice}/>
 
                     </Modal>
                     <Burger ingredients={this.props.ingredients}/>
@@ -77,7 +71,7 @@ class BurgerBuilder extends Component {
                                    ordered={this.purchaseHandler}
                                    purchasable={this.props.totalPrice > BASE_PRICE}/>
                 </Fragment> :
-                !this.state.error ? <Spinner/> :
+                !this.props.error ? <Spinner/> :
                     <p style={{textAlign: "center", fontWeight: "bold"}}>Ingredients could not be loaded!</p>
         );
     }
@@ -86,6 +80,7 @@ class BurgerBuilder extends Component {
 const mapStateToProps = (state) => {
     return {
         ingredients: state.ings.ingredients,
+        error: state.ings.error,
         totalPrice: state.price.totalPrice,
     }
 }
@@ -94,14 +89,18 @@ const mapDispatchToProps = (dispatch) => {
     return {
         onIngredientAdded: (ingredientName) => {
             dispatch(ingredientsActions.addIngredient(ingredientName))
-            dispatch(totalPriceActions.addPrice(INGREDIENT_PRICES[ingredientName]))
+            dispatch(totalPriceActions.addPrice(getIngredientPrice(ingredientName)))
         },
         onIngredientRemoved: (ingredientName) => {
             dispatch(ingredientsActions.removeIngredient(ingredientName))
-            dispatch(totalPriceActions.removePrice(INGREDIENT_PRICES[ingredientName]))
+            dispatch(totalPriceActions.removePrice(getIngredientPrice(ingredientName)))
         },
+        onInitIngredients: () => {
+            dispatch(ingredientsActions.initIngredients())
+            dispatch(totalPriceActions.resetPrice())
+        },
+        onInitPurchase: () => dispatch(purchaseActions.purchaseInit()),
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
