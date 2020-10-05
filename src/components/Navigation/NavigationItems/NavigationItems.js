@@ -9,7 +9,10 @@ class NavigationItems extends React.Component {
             <ul className={styles.NavigationItems}>
                 <NavigationItem link="/">Burger Builder</NavigationItem>
                 <NavigationItem link="/orders">Orders</NavigationItem>
-                <NavigationItem link="/auth">{this.props.token && this.props.userId ? 'Sign Out' : 'Authenticate'}</NavigationItem>
+                {this.props.isAuthenticated ?
+                    <NavigationItem link="/logout">Logout</NavigationItem> :
+                    <NavigationItem link="/auth">Authenticate</NavigationItem>
+                }
             </ul>
         );
     }
@@ -17,8 +20,7 @@ class NavigationItems extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        userId: state.auth.userId,
-        token: state.auth.token,
+        isAuthenticated: state.auth.token !== null,
     }
 }
 
