@@ -138,9 +138,10 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.totalPrice,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId,
         }
-        this.props.onOrderBurger(order);
+        this.props.onOrderBurger(order, this.props.token);
     }
 
     onChangeHandler = (event, inputId) => {
@@ -200,12 +201,14 @@ const mapStateToProps = (state) => {
         ingredients: state.ings.ingredients,
         totalPrice: state.price.totalPrice,
         loading: state.purchase.loading,
+        token: state.auth.token,
+        userId: state.auth.userId,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        onOrderBurger: (orderData) => dispatch(purchaseActions.purchaseBurger(orderData)),
+        onOrderBurger: (orderData, token) => dispatch(purchaseActions.purchaseBurger(orderData, token)),
     }
 }
 
