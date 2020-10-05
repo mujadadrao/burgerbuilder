@@ -2,6 +2,7 @@ import ingredients from './ingredients';
 import totalPrice from './totalPrice';
 import purchase from './purchase';
 import orders from './orders';
+import auth from './auth';
 import {combineReducers} from "redux";
 
 export default combineReducers({
@@ -9,4 +10,5 @@ export default combineReducers({
        price: totalPrice,
        orders: orders,
        purchase: purchase,
+       auth: auth,
 });
