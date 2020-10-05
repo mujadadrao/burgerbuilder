@@ -43,7 +43,7 @@ class Auth extends Component {
     }
 
     componentDidMount() {
-        if(!this.props.building && this.props.authRedirectPath !== '/'){
+        if (!this.props.building && this.props.authRedirectPath !== '/') {
             this.props.onSetAuthRedirectPath();
         }
     }
@@ -106,7 +106,7 @@ class Auth extends Component {
 
     render() {
         if (this.props.isAuthenticated) {
-            return <Redirect to={this.props.authRedirectPath} />
+            return <Redirect to={this.props.authRedirectPath}/>
         }
         const formElementsArray = [];
         for (let key in this.state.controls) {
@@ -147,7 +147,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(authActions.auth(email, password, isSignUp)),
+        onAuth: (email, password, isSignUp) => dispatch(authActions.authUser(email, password, isSignUp)),
         onSetAuthRedirectPath: () => dispatch(authActions.setAuthRedirectPath('/')),
     };
 };
