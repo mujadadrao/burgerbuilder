@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes';
-import axios from "../../axios-orders";
 
 export const fetchOrderStart = () => ({
     type: actionTypes.FETCH_ORDERS_START,
@@ -17,21 +16,9 @@ export const fetchOrderFailed = (error) => ({
 })
 
 export const fetchOrders = (token, userId) => {
-    return dispatch => {
-        dispatch(fetchOrderStart());
-        axios.get('/orders.json?auth=' + token + `&orderBy="userId"&equalTo="${userId}"`)
-            .then(res => {
-                const fetchedOrders = [];
-                for (let key in res.data) {
-                    fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                    });
-                }
-                dispatch(fetchOrderSuccess(fetchedOrders));
-            })
-            .catch(error => {
-                dispatch(fetchOrderFailed(error));
-            });
+    return {
+        type: actionTypes.INIT_FETCH_ORDERS,
+        token,
+        userId,
     }
 }

@@ -7,12 +7,15 @@ import {BrowserRouter} from "react-router-dom";
 import {createStore, compose} from "redux";
 import {Provider} from 'react-redux';
 import reducers from "./store/reducers";
-import middlewares from './store/middlewares';
-
+import {middlewares, sagaMiddleware} from './store/middlewares';
+import {watchAuth, watchIngredients, watchOrders, watchPurchase} from './store/sagas/watcher';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(middlewares));
-
+sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchIngredients);
+sagaMiddleware.run(watchOrders);
+sagaMiddleware.run(watchPurchase);
 
 ReactDOM.render(
     <React.StrictMode>
