@@ -2,6 +2,8 @@
 
 A burger builder app where you can build a juicy, delicious burger and order it online!
 
+Test it live: <https://burger-builder-9de3a.web.app/>
+
 ### Installation
 - Clone or download the repository
 - Navigate to the repository's directory
